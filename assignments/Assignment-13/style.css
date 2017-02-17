@@ -1,0 +1,44 @@
+#task-table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#task-table th,
+td {
+    border: 2px solid black;
+    text-align: left;
+    padding: 15px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+input[type=text],
+input[type=number] {
+    width: 40%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type=submit] {
+    background-color: gray;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+}
+
+label {
+    font-size: larger;
+}
+
+div {
+    border: 1px solid black;
+    width: 50%;
+    border-radius: 5px;
+    padding: 10px;
+}
