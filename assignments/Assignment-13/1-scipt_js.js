@@ -42,37 +42,34 @@
         }
     }
     var rownumber = 0; /*********************/
-    var t = {}; /*********************/
+    var edittask = {}; /*********************/
 
-    function editTask(task) { /*********************/
+    function editTask(task) {
         return function() {
             var table = document.getElementById("task-table");
+            document.getElementById("edit-task").style.display = "block";
+
             var cat = document.getElementById("edit-category");
-            document.getElementById("edit-category").disabled = false;
             cat.value = table.rows[task.id].cells[0].innerHTML;
 
             var title = document.getElementById("edit-title");
-            document.getElementById("edit-title").disabled = false;
             title.value = table.rows[task.id].cells[1].innerHTML;
 
             var priority = document.getElementById("edit-priority");
-            document.getElementById("edit-priority").disabled = false;
             priority.value = table.rows[task.id].cells[2].innerHTML;
 
             var estimate = document.getElementById("edit-estimate");
-            document.getElementById("edit-estimate").disabled = false;
             estimate.value = table.rows[task.id].cells[3].innerHTML;
 
-            document.getElementById("edit-button").disabled = false;
             rownumber = task.id;
-            t = task;
+            edittask = task;
 
         }
-    } /*********************/
+    }
 
 
 
-    function edit(event) { /*********************/
+    function edit(event) {
         event.preventDefault();
         var table = document.getElementById("task-table");
 
@@ -88,26 +85,19 @@
         var est = document.getElementById("edit-estimate");
         table.rows[rownumber].cells[3].innerHTML = est.value;
 
-        t.category = cat.value;
-        t.title = title.value;
-        t.priority = prio.value;
-        t.estimate = est.value;
-        t.complete();
-        table.rows[rownumber].cells[4].innerHTML = t.spent;
-        table.rows[rownumber].cells[5].innerHTML = t.remaining;
-        if (t.done()) {
+        edittask.category = cat.value;
+        edittask.title = title.value;
+        edittask.priority = prio.value;
+        edittask.estimate = est.value;
+        edittask.complete();
+        table.rows[rownumber].cells[4].innerHTML = edittask.spent;
+        table.rows[rownumber].cells[5].innerHTML = edittask.remaining;
+        if (edittask.done()) {
             table.rows[rownumber].cells[6].innerHTML = "&#10004";
         }
+        document.getElementById("edit-task").style.display = "none";
 
-        cat.value = "";
-        cat.disabled = true;
-        title.value = "";
-        title.disabled = true;
-        prio.value = "";
-        prio.disabled = true;
-        est.value = "";
-        est.disabled = true;
-    } /*********************/
+    }
 
     function createTaskRow(task) {
         var tr = document.createElement('tr');
@@ -116,17 +106,17 @@
         tr.appendChild(createTableCell(task.priority));
         tr.appendChild(createTableCell(task.estimate));
         task.complete();
-        tr.appendChild(createTableCell(task.spent)); //completed
+        tr.appendChild(createTableCell(task.spent));
         tr.appendChild(createTableCell(task.remaining));
         tr.appendChild(createTableCell(task.done() && '&#10004'));
         var button = document.createElement("button");
         button.innerText = "Delete";
         button.addEventListener("click", deleteTesk(task));
         tr.appendChild(button);
-        var button2 = document.createElement("button"); /*********************/
-        button2.innerText = "Edit"; /*********************/
-        button2.addEventListener("click", editTask(task)); /*********************/
-        tr.appendChild(button2); /*********************/
+        var button2 = document.createElement("button");
+        button2.innerText = "Edit";
+        button2.addEventListener("click", editTask(task));
+        tr.appendChild(button2);
         return tr;
     }
 
