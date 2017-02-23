@@ -1,31 +1,28 @@
-import { Task } from "./task";
-
- export let createTaskManager = function () {
-    let tasks: Object[];
+"use strict";
+var task_1 = require("./task");
+var createTaskManager = function () {
+    var tasks;
     var onChangeCallback;
-    let  create = function (id:number,category: string, title: string, priority: number, estimate: number) {
-        let task = new Task(id,category, title, priority, estimate);
+    var create = function (id, category, title, priority, estimate) {
+        var task = new task_1.Task(id, category, title, priority, estimate);
         tasks.push(task);
         onChangeCallback && onChangeCallback(tasks);
         return task;
     };
-   function find(query) {
+    function find(query) {
         query && query.toLowerCase && (query = query.toLowerCase());
-        return _filter(function(t) {
+        return _filter(function (t) {
             return t.title.toLowerCase().indexOf(query) > -1 || t.category.toLowerCase().indexOf(query) > -1;
         });
     }
-
     function get(i) {
         return tasks[i];
     }
-
     function getAll(activeOnly) {
-        return _filter(function(task) {
+        return _filter(function (task) {
             return !activeOnly || !task.done();
         });
     }
-
     function remove(index) {
         if (typeof index !== 'number') {
             for (var i = 0; i < tasks.length; i++) {
@@ -35,25 +32,21 @@ import { Task } from "./task";
                 }
             }
         }
-
         if (index >= 0 && index < tasks.length) {
             tasks.splice(index, 1);
             onChangeCallback && onChangeCallback(tasks);
         }
     }
-
     function onChange(callback) {
         onChangeCallback = callback;
     }
-
     function _filter(predicte) {
         var matched = [];
-        tasks.forEach(function(task) {
+        tasks.forEach(function (task) {
             predicte(task) && matched.push(task);
         });
         return matched;
     }
-
     return {
         create: create,
         find: find,

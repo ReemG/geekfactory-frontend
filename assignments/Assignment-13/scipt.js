@@ -1,8 +1,5 @@
-import {createTaskManager} from "./task-manager";
-//// <reference path='task-manager.ts'/>
-(function(scope) {
+(function () {
     "use strict";
-
     var form = document.getElementById("new-todo");
     var tasksContainer = document.querySelector('#tasks');
     var taskManager = createTaskManager();
@@ -12,81 +9,59 @@ import {createTaskManager} from "./task-manager";
     var form2 = document.getElementById("edit-task"); /*********************/
     form2 && form2.addEventListener('submit', edit); /*********************/
     var c = 0; /*********************/
-
     function addTask(event) {
         event.preventDefault();
         var task = {};
-        event.target.querySelectorAll('input:not([type="submit"]').forEach(function(input) {
+        event.target.querySelectorAll('input:not([type="submit"]').forEach(function (input) {
             task[input.name] = input.value;
             input.value = null;
         });
         c += 1; /*********************/
         taskManager.create(c, task.category, task.title, task.priority, task.estimate); /*********************/
     }
-
-
     function update(tasks) {
         while (tasksContainer.hasChildNodes()) {
             tasksContainer.removeChild(tasksContainer.lastChild);
         }
-
-        tasks.forEach(function(task) {
+        tasks.forEach(function (task) {
             tasksContainer.appendChild(createTaskRow(task));
         });
         localStorage.setItem('tasks', JSON.stringify(tasks));
-
     }
-
-
     function deleteTesk(task) {
-        return function() {
+        return function () {
             taskManager.remove(task);
-        }
+        };
     }
     var rownumber = 0; /*********************/
     var edittask = {}; /*********************/
-
     function editTask(task) {
-        return function() {
+        return function () {
             var table = document.getElementById("task-table");
             document.getElementById("edit-task").style.display = "block";
-
             var cat = document.getElementById("edit-category");
             cat.value = table.rows[task.id].cells[0].innerHTML;
-
             var title = document.getElementById("edit-title");
             title.value = table.rows[task.id].cells[1].innerHTML;
-
             var priority = document.getElementById("edit-priority");
             priority.value = table.rows[task.id].cells[2].innerHTML;
-
             var estimate = document.getElementById("edit-estimate");
             estimate.value = table.rows[task.id].cells[3].innerHTML;
-
             rownumber = task.id;
             edittask = task;
-
-        }
+        };
     }
-
-
-
     function edit(event) {
         event.preventDefault();
         var table = document.getElementById("task-table");
-
         var cat = document.getElementById("edit-category");
         table.rows[rownumber].cells[0].innerHTML = cat.value;
-
         var title = document.getElementById("edit-title");
         table.rows[rownumber].cells[1].innerHTML = title.value;
-
         var prio = document.getElementById("edit-priority");
         table.rows[rownumber].cells[2].innerHTML = prio.value;
-
         var est = document.getElementById("edit-estimate");
         table.rows[rownumber].cells[3].innerHTML = est.value;
-
         edittask.category = cat.value;
         edittask.title = title.value;
         edittask.priority = prio.value;
@@ -98,9 +73,7 @@ import {createTaskManager} from "./task-manager";
             table.rows[rownumber].cells[6].innerHTML = "&#10004";
         }
         document.getElementById("edit-task").style.display = "none";
-
     }
-
     function createTaskRow(task) {
         var tr = document.createElement('tr');
         tr.appendChild(createTableCell(task.category));
@@ -121,7 +94,6 @@ import {createTaskManager} from "./task-manager";
         tr.appendChild(button2);
         return tr;
     }
-
     function createTableCell(text) {
         var td = document.createElement('td');
         if (text) {
@@ -142,4 +114,4 @@ import {createTaskManager} from "./task-manager";
     //         })
     //     }
     // }
-})(window);
+})();
